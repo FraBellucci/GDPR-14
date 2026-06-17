@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>MOD14 – Scenario: Privacy nella Ricerca Scientifica</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Arial,sans-serif}
+body{background:linear-gradient(135deg,#880e4f,#ad1457,#c2185b);display:flex;justify-content:center;align-items:center;min-height:100vh;overflow:hidden}
+.container{width:800px;height:550px;background:#fff;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.5);overflow:hidden;display:flex;flex-direction:column}
+.header{background:linear-gradient(135deg,#880e4f,#ad1457);color:#fff;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.header h1{font-size:15px;font-weight:700}.header p{font-size:11px;opacity:.8;margin-top:1px}
+button{padding:6px 12px;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;transition:all .2s}
+.btn-white{background:#fff;color:#880e4f}.btn-white:hover{background:#fce4ec}
+.btn-outline{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.4)}.btn-outline:hover{background:rgba(255,255,255,.25)}
+.btn-group{display:flex;gap:8px}
+.progress-bar{height:4px;background:#fce4ec;flex-shrink:0}
+.progress-fill{height:100%;background:linear-gradient(90deg,#880e4f,#f06292);transition:width .4s}
+.page{flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0}
+.hidden{display:none!important}
+.instr-page{padding:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center}
+.instr-icon{font-size:52px}
+.instr-page h2{font-size:20px;font-weight:700;color:#880e4f}
+.instr-page p{font-size:13px;color:#555;line-height:1.7;max-width:500px}
+.instr-chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:4px}
+.chip{background:#fce4ec;border-radius:20px;padding:5px 12px;font-size:11px;font-weight:600;color:#880e4f}
+.btn-start{background:linear-gradient(135deg,#880e4f,#ad1457);color:#fff;padding:12px 32px;font-size:14px;border-radius:8px;font-weight:700;margin-top:8px}
+.game-page{padding:16px 20px;display:flex;flex-direction:column;gap:12px;overflow:hidden;min-height:0;flex:1}
+.scenario-counter{font-size:11px;color:#888;text-align:right}
+.scenario-card{background:#fce4ec;border-radius:8px;padding:14px 16px;border-left:4px solid #880e4f;font-size:13px;color:#333;line-height:1.6;flex-shrink:0}
+.scenario-card strong{color:#880e4f;font-size:11px;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px}
+.options-grid{display:flex;flex-direction:column;gap:7px;flex-shrink:0}
+.opt-btn{padding:10px 14px;border:2px solid #e0e0e0;border-radius:8px;background:#fff;cursor:pointer;font-size:12px;font-weight:500;text-align:left;transition:all .2s;color:#333;line-height:1.4}
+.opt-btn:hover:not(:disabled){border-color:#ad1457;background:#fce4ec;transform:translateY(-1px)}
+.opt-btn.correct{border-color:#2e7d32;background:#e8f5e9;color:#1b5e20;font-weight:700}
+.opt-btn.wrong{border-color:#c62828;background:#ffebee;color:#b71c1c}
+.opt-btn:disabled{cursor:default}
+.feedback-box{border-radius:8px;padding:11px 14px;font-size:12px;line-height:1.6;flex-shrink:0}
+.feedback-box.correct-fb{background:#e8f5e9;border-left:4px solid #2e7d32;color:#1b5e20}
+.feedback-box.wrong-fb{background:#ffebee;border-left:4px solid #c62828;color:#b71c1c}
+.btn-next{align-self:flex-end;background:linear-gradient(135deg,#880e4f,#ad1457);color:#fff;padding:9px 24px;font-size:12px;border-radius:8px;font-weight:700}
+.result-page{padding:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center}
+.score-circle{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,#880e4f,#ad1457);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff}
+.score-circle .num{font-size:26px;font-weight:700}
+.score-circle .den{font-size:12px;opacity:.8}
+.result-page h2{font-size:20px;font-weight:700;color:#880e4f}
+.result-page p{font-size:13px;color:#555;max-width:440px;line-height:1.6}
+.result-btns{display:flex;gap:10px;margin-top:4px}
+.btn-replay{background:linear-gradient(135deg,#880e4f,#ad1457);color:#fff;padding:10px 24px;font-size:13px;border-radius:8px;font-weight:700}
+.btn-close{background:#f5f5f5;color:#333;padding:10px 24px;font-size:13px;border-radius:8px;font-weight:700}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div><h1>🔬 Privacy nella Ricerca Scientifica</h1><p>Modulo 14 – GDPR e trattamento per finalità di ricerca</p></div>
+    <div class="btn-group">
+      <button class="btn-outline" onclick="resetGame()">🔄 Rigioca</button>
+      <button class="btn-white" onclick="window.close()">Torna al corso</button>
+    </div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <div class="page instr-page" id="instrPage">
+    <div class="instr-icon">🔬</div>
+    <h2>Cosa è lecito nella ricerca scientifica?</h2>
+    <p>Il GDPR prevede deroghe speciali per la ricerca scientifica, ma con condizioni precise. Per ogni scenario, scegli l'azione corretta.</p>
+    <div class="instr-chips">
+      <span class="chip">Consenso informato</span>
+      <span class="chip">Pseudonimizzazione</span>
+      <span class="chip">Finalità compatibili</span>
+      <span class="chip">Comitato Etico</span>
+    </div>
+    <button class="btn-start" onclick="startGame()">Inizia il gioco →</button>
+  </div>
+  <div class="page game-page hidden" id="gamePage">
+    <div class="scenario-counter">Scenario <span id="scNum">1</span> di 6</div>
+    <div class="scenario-card"><strong>🔬 Scenario</strong><span id="scText"></span></div>
+    <div class="options-grid" id="optGrid"></div>
+    <div class="feedback-box hidden" id="feedbackBox"></div>
+    <button class="btn-next hidden" id="btnNext" onclick="nextScenario()">Avanti →</button>
+  </div>
+  <div class="page result-page hidden" id="resultPage">
+    <div class="score-circle"><div class="num" id="resScore">0</div><div class="den">su 6</div></div>
+    <h2 id="resTitle"></h2><p id="resText"></p>
+    <div class="result-btns">
+      <button class="btn-replay" onclick="resetGame()">🔄 Rigioca</button>
+      <button class="btn-close" onclick="window.close()">Torna al corso</button>
+    </div>
+  </div>
+</div>
+<script>
+const SCENARIOS=[
+  {text:"Un'università vuole riutilizzare i dati sanitari raccolti in uno studio del 2018 (con consenso originale per 'ricerca oncologica') per una nuova ricerca sull'Alzheimer. È necessario un nuovo consenso?",correct:0,options:["Sì, a meno che il riutilizzo sia compatibile con la finalità originale, serve valutazione di compatibilità o nuovo consenso","No, il consenso alla ricerca vale per qualsiasi ricerca futura dello stesso ente","No, i dati sanitari anonimi possono sempre essere riutilizzati","Solo se i dati vengono pubblicati"],feedback:"✅ <b>Risposta A.</b> Il GDPR (art. 5, principio di limitazione della finalità) consente il riutilizzo per ricerca compatibile, ma il ricercatore deve valutare la compatibilità. Ricerca oncologica e Alzheimer non sono automaticamente compatibili: occorre un parere del Comitato Etico e, spesso, un nuovo consenso informato."},
+  {text:"Un ricercatore raccoglie dati genetici per uno studio sulla predisposizione a malattie rare. I partecipanti hanno firmato un consenso generico 'per ricerca scientifica'. È sufficiente?",correct:1,options:["Sì, il consenso generico alla ricerca è sempre valido per i dati genetici","No, per i dati genetici il consenso deve essere specifico rispetto alle finalità","Sì, purché i dati siano pseudonimizzati","Solo per studi con più di 100 partecipanti"],feedback:"✅ <b>Risposta B.</b> I dati genetici sono categorie particolari ex art. 9 GDPR. Il consenso deve essere specifico per la finalità di ricerca: un consenso generico 'per qualsiasi ricerca' non è considerato valido. Il Comitato Etico deve approvare il modulo di consenso informato."},
+  {text:"Un istituto di ricerca raccoglie dati clinici pseudonimizzati da 10 ospedali europei. Uno dei ricercatori propone di pubblicare i dati grezzi in open access per favorire la riproducibilità. Cosa è necessario?",correct:2,options:["Nulla: i dati pseudonimizzati possono essere pubblicati liberamente","È sufficiente l'approvazione del direttore dell'istituto","Prima di pubblicare dati pseudonimizzati, verificare che non siano re-identificabili nel contesto, ottenere il consenso o applicare anonimizzazione robusta","I dati pseudonimizzati equivalgono a dati anonimi: nessun vincolo GDPR"],feedback:"✅ <b>Risposta C.</b> I dati pseudonimizzati restano dati personali sotto il GDPR: se pubblicati possono essere re-identificati da chi ha la chiave o attraverso il linkage con altri dataset. Prima della pubblicazione open access occorre vera anonimizzazione, consenso specifico alla pubblicazione, o entrambi."},
+  {text:"Un'azienda farmaceutica vuole condurre una sperimentazione clinica in Italia. Il responsabile privacy propone di esentare lo studio dall'obbligo di consenso individuale, citando l'interesse pubblico nella salute. È corretto?",correct:1,options:["Sì, tutte le sperimentazioni farmaceutiche sono esentate dal consenso in base all'interesse pubblico","No, la sperimentazione clinica richiede sempre il consenso informato del paziente","Solo per studi osservazionali retrospettivi","Sì, se approvato dal Comitato Etico nazionale"],feedback:"✅ <b>Risposta B.</b> Il Regolamento UE 536/2014 sulle sperimentazioni cliniche impone il consenso informato come requisito fondamentale. Il GDPR art. 9 consente alcune deroghe per interesse pubblico, ma non per studi interventistici su persone. Il consenso è obbligatorio e deve essere documentato."},
+  {text:"Un ricercatore dell'università riceve una richiesta da un partecipante allo studio di cancellare i propri dati (diritto all'oblio). Lo studio è in corso da 2 anni. Come risponde?",correct:2,options:["Accetta immediatamente e cancella tutti i dati del partecipante","Rifiuta: una volta firmato il consenso, non è possibile revocarlo","Informa il partecipante che può revocare il consenso per i trattamenti futuri, ma i dati già aggregati possono non essere cancellabili senza compromettere i risultati scientifici","Il partecipante non ha diritto alla cancellazione se ha firmato il consenso"],feedback:"✅ <b>Risposta C.</b> Il GDPR riconosce l'eccezione alla cancellazione per finalità di ricerca (art. 17(3)(d)). Se i dati sono già stati integrati in analisi aggregate e la cancellazione vanificherebbe risultati scientifici legittimi, il diritto alla cancellazione può essere limitato. Il partecipante va comunque informato chiaramente."},
+  {text:"Un ospedale vuole condividere cartelle cliniche anonimizzate con una startup di AI per sviluppare algoritmi diagnostici. Il DPO sostiene che, anche se anonimizzati, serve una valutazione d'impatto (DPIA). Ha ragione?",correct:0,options:["Sì, il coinvolgimento di AI su dati sanitari e la cessione a terze parti giustificano una valutazione del rischio residuo di re-identificazione","No, se i dati sono veramente anonimi il GDPR non si applica e non serve DPIA","Solo se la startup è extra-UE","Solo se i dati riguardano più di 1000 pazienti"],feedback:"✅ <b>Risposta A.</b> Il DPO ha ragione nel richiedere cautela. L'anonimizzazione va verificata (non è mai assoluta con ML avanzato). Il rischio di re-identificazione tramite AI è reale. Una due diligence sul fornitore, una valutazione del rischio residuo e clausole contrattuali adeguate sono best practice irrinunciabili."},
+];
+let current=0,score=0;
+function startGame(){document.getElementById('instrPage').classList.add('hidden');document.getElementById('gamePage').classList.remove('hidden');loadScenario();}
+function loadScenario(){const s=SCENARIOS[current];document.getElementById('scNum').textContent=current+1;document.getElementById('scText').textContent=s.text;document.getElementById('feedbackBox').classList.add('hidden');document.getElementById('btnNext').classList.add('hidden');document.getElementById('progressFill').style.width=((current/6)*100)+'%';const grid=document.getElementById('optGrid');grid.innerHTML='';s.options.forEach((opt,i)=>{const b=document.createElement('button');b.className='opt-btn';b.textContent=String.fromCharCode(65+i)+') '+opt;b.onclick=()=>answer(i,b);grid.appendChild(b);});}
+function answer(idx,btn){const s=SCENARIOS[current];document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);const fb=document.getElementById('feedbackBox');if(idx===s.correct){btn.classList.add('correct');score++;fb.className='feedback-box correct-fb';fb.innerHTML=s.feedback;}else{btn.classList.add('wrong');document.querySelectorAll('.opt-btn')[s.correct].classList.add('correct');fb.className='feedback-box wrong-fb';fb.innerHTML='❌ Non corretto. '+s.feedback;}fb.classList.remove('hidden');document.getElementById('btnNext').classList.remove('hidden');}
+function nextScenario(){current++;if(current>=SCENARIOS.length)showResult();else loadScenario();}
+function showResult(){document.getElementById('gamePage').classList.add('hidden');document.getElementById('resultPage').classList.remove('hidden');document.getElementById('progressFill').style.width='100%';document.getElementById('resScore').textContent=score;const t=['Da rivedere','In progress','Discreto','Buono!','Ottimo!','Eccellente!','Perfetto!'];const d=['Rileggi il modulo: consenso specifico, DPIA, diritto di revoca e riutilizzo compatibile sono concetti chiave.','Qualche lacuna. Focus su: consenso per categorie particolari e limiti del diritto alla cancellazione in ricerca.','Più della metà corrette. Approfondisci il bilanciamento tra diritti degli interessati e interesse scientifico.','Buone basi. Ricorda: anonimizzazione non è assoluta, e la re-identificabilità va valutata caso per caso.','Ottima padronanza! Il consenso specifico e la DPIA anche su dati anonimi sono i punti più raffinati.','Quasi perfetto! Grande conoscenza del GDPR applicato alla ricerca scientifica.','Perfetto! Hai risposto correttamente a tutti gli scenari. Conosci la privacy in ricerca a fondo.'];document.getElementById('resTitle').textContent=t[score];document.getElementById('resText').textContent=d[score];}
+function resetGame(){current=0;score=0;document.getElementById('resultPage').classList.add('hidden');document.getElementById('gamePage').classList.add('hidden');document.getElementById('instrPage').classList.remove('hidden');document.getElementById('progressFill').style.width='0%';}
+</script>
+</body>
+</html>
